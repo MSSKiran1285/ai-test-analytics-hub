@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pytest_cache/
+.ipynb_checkpoints/
+
+# Environments
+.venv/
+env/
+venv/
+
+# Data (keep only small sample CSVs)
+data/processed/
+*.log
+
+# VS Code
+.vscode/

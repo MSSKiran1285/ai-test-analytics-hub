@@ -1,0 +1,6 @@
+defect_id,test_case_id,project,release_id,module,severity,defect_type,status,created_date,closed_date
+DEF_1001,TC_001,Brain Bits,REL_2025_04,FI,High,Data Issue,Closed,16-03-2025,18-03-2025
+DEF_1002,TC_001,Brain Bits,REL_2025_04,FI,Medium,Config Issue,Open,20-03-2025,
+DEF_1003,TC_003,Cardiac Challenge,REL_2025_02,SD,High,Code Defect,Closed,21-01-2025,25-01-2025
+DEF_1004,TC_005,Black Panther,REL_2025_01,PP,High,Performance,Open,02-02-2025,
+DEF_1005,TC_002,Brain Bits,REL_2025_04,FI,Low,UI Defect,Closed,16-03-2025,17-03-2025

@@ -1,0 +1,6 @@
+test_case_id,project,release_id,module,sub_module,description,priority,last_execution_status,last_execution_date,execution_count,failure_count
+TC_001,Brain Bits,REL_2025_04,FI,AR,Validate invoice creation for EU customer,High,Failed,15-03-2025,10,4
+TC_002,Brain Bits,REL_2025_04,FI,AP,Validate vendor payment run for LATAM,Medium,Passed,16-03-2025,8,1
+TC_003,Cardiac Challenge,REL_2025_02,SD,Delivery,Validate delivery doc creation for export orders,High,Failed,20-01-2025,12,5
+TC_004,Cardiac Challenge,REL_2025_02,MM,PO,Validate PO creation with new tax codes,Medium,Passed,18-01-2025,6,0
+TC_005,Black Panther,REL_2025_01,PP,Capacity,Validate capacity planning run for Q1,High,Failed,05-12-2024,5,3
