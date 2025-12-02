@@ -17,3 +17,14 @@ data/processed/
 
 # VS Code
 .vscode/
+
+# Python
+__pycache__/
+*.pyc
+
+# Virtual env
+venv/
+
+# Secrets
+.env
+*.pem
