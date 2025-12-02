@@ -4,3 +4,10 @@ scikit-learn
 matplotlib
 seaborn
 jupyter
+fastapi
+uvicorn[standard]
+SQLAlchemy
+pymysql
+python-dotenv
+pydantic-settings
+pymysql
