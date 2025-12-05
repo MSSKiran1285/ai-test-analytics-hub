@@ -1,48 +1,53 @@
-from fastapi import FastAPI, Depends, HTTPException, Header
+# app/main.py
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
-
-API_KEY = os.getenv("API_KEY")
-
-# Dependency: Verify API key
-def verify_api_key(x_api_key: str = Header(None)):
-    if x_api_key != API_KEY:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-
 from .database import init_db
 from .routers import feedback, testruns
+from .dependencies import get_api_key  # our API-key dependency
+
+
+# Load environment variables from .env (APP_NAME, APP_ENV, API_KEY, etc.)
+load_dotenv()
+
+APP_NAME = os.getenv("APP_NAME", "AI Test Analytics Hub API")
+APP_ENV = os.getenv("APP_ENV", "dev")
 
 app = FastAPI(
-    title="AI Test Analytics Hub API",
-    version="0.1.0"
+    title=APP_NAME,
+    version="0.1.0",
 )
 
-# CORS: allow your frontend (update when UI deployed)
+# --- CORS setup (for UI / Postman / other clients) ---
+origins = ["*"]  # later we can restrict this
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Create tables on startup
+# --- DB init on startup ---
 init_db()
 
+
+# --- Health / root endpoint ---
 @app.get("/")
 def read_root():
-    return {"message": "AI Test Analytics Hub API is running"}
+    return {"message": f"{APP_NAME} is running in {APP_ENV} mode"}
 
-# Routers with API Key enforcement
+
+# --- Routers with API-key protection ---
 app.include_router(
     feedback.router,
-    dependencies=[Depends(verify_api_key)]
+    dependencies=[Depends(get_api_key)],
 )
 
 app.include_router(
     testruns.router,
-    dependencies=[Depends(verify_api_key)]
+    dependencies=[Depends(get_api_key)],
 )
