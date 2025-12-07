@@ -7,10 +7,12 @@ from sqlalchemy.orm import Session
 
 from .. import models, schemas
 from ..database import get_db
+from ..dependencies import get_api_key
 
 router = APIRouter(
     prefix="/feedback",
     tags=["Feedback"],
+    dependencies=[Depends(get_api_key)],
 )
 
 

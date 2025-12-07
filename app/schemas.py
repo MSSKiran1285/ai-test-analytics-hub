@@ -1,12 +1,16 @@
 # app/schemas.py
 from datetime import datetime
 from pydantic import BaseModel
+from typing import Optional, List
 
-# ---------- Feedback ----------
+from pydantic import BaseModel
+
+
+# -------- Feedback Schemas --------
 
 class FeedbackBase(BaseModel):
-    user_id: str | None = None
     message: str
+    user_id: Optional[str] = None
 
 
 class FeedbackCreate(FeedbackBase):
@@ -15,77 +19,46 @@ class FeedbackCreate(FeedbackBase):
 
 
 class FeedbackRead(FeedbackBase):
-    """What we return to the client."""
+    """Payload returned to clients."""
     id: int
     created_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
-# ---------- Tests & ML ----------
-
-class TestCaseResultBase(BaseModel):
-    case_id: str | None = None
-    name: str | None = None
-    module: str | None = None
-    status: str                                   # passed/failed/etc.
-    duration_ms: int | None = None
-    severity: str | None = None
-    failure_reason: str | None = None
-    error_type: str | None = None
-
-
-class TestCaseResultCreate(TestCaseResultBase):
-    run_id: int
-
-
-class TestCaseResultRead(TestCaseResultBase):
-    id: int
-    run_id: int
-    created_at: datetime
-
-    class Config:
-        orm_mode = True
-
-
-class RunPredictionRead(BaseModel):
-    id: int
-    run_id: int
-    risk_score: float
-    predicted_fail_count: int | None = None
-    model_version: str | None = None
-    created_at: datetime
-
-    class Config:
-        orm_mode = True
-
+# -------- TestRun Schemas --------
 
 class TestRunBase(BaseModel):
     run_name: str
-    suite_name: str | None = None
-    environment: str | None = None
-    triggered_by: str | None = None
-    status: str | None = None
-    total_tests: int = 0
-    passed_tests: int = 0
-    failed_tests: int = 0
-    started_at: datetime | None = None
-    finished_at: datetime | None = None
+    suite_name: str
+    environment: str
+    total_tests: int
+    passed_tests: int
+    failed_tests: int
+    execution_time_seconds: Optional[float] = None
 
 
 class TestRunCreate(TestRunBase):
+    """Payload for creating a new test run."""
     pass
 
 
 class TestRunRead(TestRunBase):
+    """Payload returned when reading a test run."""
     id: int
-    created_at: datetime
+    executed_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
-class TestRunWithDetails(TestRunRead):
-    test_cases: list[TestCaseResultRead] = []
-    prediction: RunPredictionRead | None = None
+class TestRunSummary(BaseModel):
+    """High-level analytics for test runs."""
+    total_runs: int
+    total_tests: int
+    total_passed: int
+    total_failed: int
+    average_pass_rate: float
+    last_run_at: Optional[datetime] = None
+

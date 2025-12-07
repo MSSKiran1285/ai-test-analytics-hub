@@ -1,4 +1,3 @@
-# app/models.py
 from sqlalchemy import (
     Column,
     Integer,
@@ -18,25 +17,21 @@ class Feedback(Base):
     __tablename__ = "feedback"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(String(50), nullable=True)   # optional user id
-    message = Column(Text, nullable=False)        # feedback message
+    user_id = Column(String(50), nullable=True)
+    message = Column(Text, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
 class TestRun(Base):
-    """
-    A single execution of a suite, e.g. 'Nightly Regression 2025-12-05'.
-    Aggregated totals are stored here for fast dashboard display.
-    """
     __tablename__ = "test_runs"
 
     id = Column(Integer, primary_key=True, index=True)
-    run_name = Column(String(100), nullable=False)          # e.g. "Nightly Regression"
-    suite_name = Column(String(100), nullable=True)         # optional logical suite
-    environment = Column(String(50), nullable=True)         # e.g. "QA", "PreProd"
-    triggered_by = Column(String(50), nullable=True)        # user / pipeline
+    run_name = Column(String(100), nullable=False)
+    suite_name = Column(String(100), nullable=True)
+    environment = Column(String(50), nullable=True)
+    triggered_by = Column(String(50), nullable=True)
 
-    status = Column(String(20), nullable=True, index=True)  # passed/failed/running/queued
+    status = Column(String(20), nullable=True, index=True)
 
     total_tests = Column(Integer, nullable=False, default=0)
     passed_tests = Column(Integer, nullable=False, default=0)
@@ -46,7 +41,6 @@ class TestRun(Base):
     finished_at = Column(DateTime(timezone=True), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
-    # Relationships
     test_cases = relationship(
         "TestCaseResult",
         back_populates="run",
@@ -61,24 +55,21 @@ class TestRun(Base):
 
 
 class TestCaseResult(Base):
-    """
-    One row per test case executed in a run.
-    """
     __tablename__ = "test_case_results"
 
     id = Column(Integer, primary_key=True, index=True)
     run_id = Column(Integer, ForeignKey("test_runs.id"), nullable=False, index=True)
 
-    case_id = Column(String(100), nullable=True)            # external test id
+    case_id = Column(String(100), nullable=True)
     name = Column(String(200), nullable=True)
-    module = Column(String(100), nullable=True)             # SAP module, feature, etc.
+    module = Column(String(100), nullable=True)
 
-    status = Column(String(20), nullable=False)             # passed/failed/blocked/skipped
+    status = Column(String(20), nullable=False)
     duration_ms = Column(Integer, nullable=True)
 
-    severity = Column(String(20), nullable=True)            # Low/Medium/High/Critical
+    severity = Column(String(20), nullable=True)
     failure_reason = Column(Text, nullable=True)
-    error_type = Column(String(100), nullable=True)         # e.g. "AssertionError"
+    error_type = Column(String(100), nullable=True)
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
@@ -86,15 +77,12 @@ class TestCaseResult(Base):
 
 
 class RunPrediction(Base):
-    """
-    Reserved for the AI/ML part: one row per run with model output.
-    """
     __tablename__ = "run_predictions"
 
     id = Column(Integer, primary_key=True, index=True)
     run_id = Column(Integer, ForeignKey("test_runs.id"), nullable=False, unique=True)
 
-    risk_score = Column(Float, nullable=False)              # 0.0 - 1.0
+    risk_score = Column(Float, nullable=False)
     predicted_fail_count = Column(Integer, nullable=True)
     model_version = Column(String(50), nullable=True)
 
