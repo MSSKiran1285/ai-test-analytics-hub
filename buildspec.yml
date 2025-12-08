@@ -1,0 +1,35 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.11
+    commands:
+      - echo "[INSTALL] Setting up Python env"
+      - python -m pip install --upgrade pip
+      - pip install -r requirements.txt
+
+  pre_build:
+    commands:
+      - echo "[PRE_BUILD] Running tests (optional)"
+      # Uncomment if you have tests
+      # - pytest
+
+  build:
+    commands:
+      - echo "[BUILD] Preparing deployment bundle"
+      - mkdir -p bundle
+      - cp -r app bundle/app || cp -r . bundle/
+      - cp requirements.txt bundle/
+      - cp appspec.yml bundle/
+      - mkdir -p bundle/scripts
+      - cp scripts/*.sh bundle/scripts/ || echo "No scripts yet"
+
+  post_build:
+    commands:
+      - echo "[POST_BUILD] Build completed on `date`"
+
+artifacts:
+  files:
+    - '**/*'
+  base-directory: bundle
