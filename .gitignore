@@ -29,3 +29,39 @@ venv/
 .env
 *.pem
 nohup.out
+
+# Node modules
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Editor / IDE
+.vscode/
+.idea/
+
+# Cache
+.cache/
+*.cache
+.sass-cache/
+coverage/
+
+# Storybook / tools (if any)
+storybook-static/
+
